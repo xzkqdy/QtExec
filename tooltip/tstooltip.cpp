@@ -6,34 +6,36 @@
 #include <QDebug>
 
 TsToolTip::TsToolTip(QPoint startPoint, QString content, QWidget *parent)
-    : QWidget{parent}, m_startX(50), startPosition(startPoint)
+    : QLabel{parent}, m_startX(50), startPosition(startPoint)
 {
     m_triangleWidth = TRIANGLE_WIDTH;
     m_triangleHeight = TRIANGLE_HEIGHT;
     m_rectangleHeight = 44;
     m_rectangleWidth = 152;
-    this->setWindowFlags(Qt::FramelessWindowHint);
+    m_triangleWidth = 10;
+    m_triangleHeight = 6;
+    this->setWindowFlags(Qt::FramelessWindowHint|Qt::WindowStaysOnTopHint);
     setAttribute(Qt::WA_TranslucentBackground);
-    //this->resize(100,30);
+   this->resize(m_rectangleWidth,m_rectangleHeight + m_triangleHeight);
 
     m_pShadowEffect = new QGraphicsDropShadowEffect(this);
     m_pShadowEffect->setOffset(0, 0);
     m_pShadowEffect->setColor(0x09090A);
     m_pShadowEffect->setBlurRadius(SHADOW_WIDTH);
     this->setGraphicsEffect(m_pShadowEffect);
-
-    m_pLabelContent = new QLabel();
-    QHBoxLayout* hMainLayout = new QHBoxLayout(this);
-    hMainLayout->addWidget(m_pLabelContent);
-    hMainLayout->setSpacing(0);
-    hMainLayout->setContentsMargins(SHADOW_WIDTH, SHADOW_WIDTH + TRIANGLE_HEIGHT, SHADOW_WIDTH, SHADOW_WIDTH);
+    this->topLevelWidget();
+    //    m_pLabelContent = new QLabel();
+    //    QHBoxLayout* hMainLayout = new QHBoxLayout(this);
+    //    hMainLayout->addWidget(m_pLabelContent);
+    //    hMainLayout->setSpacing(0);
+    //    hMainLayout->setContentsMargins(SHADOW_WIDTH, SHADOW_WIDTH + TRIANGLE_HEIGHT, SHADOW_WIDTH, SHADOW_WIDTH);
 
     derect = Derection::down;
 
     //    m_pLabelContent->setFixedWidth(228);
     //    m_pLabelContent->setWordWrap(true);
-    //    m_pLabelContent->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
-    m_pLabelContent->setStyleSheet("QLabel{ margin: 12px; background-color: transparent; color: rgb(255, 255, 255); font-size: 12px;font-weight: 400; line-height: 20px;}");
+    this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
+    this->setStyleSheet("QLabel{ margin-left: 12px; margin-right: 12px; background-color: transparent; color: rgb(255, 255, 255); font-size: 12px;font-weight: 400; line-height: 20px;}");
 }
 
 void TsToolTip::paintEvent(QPaintEvent *event)
@@ -93,36 +95,59 @@ void TsToolTip::paintEvent(QPaintEvent *event)
 
     //    int squareWidth = 50;
     //    int squareHeight = 30;
-    trianglePolygon << QPoint(startPosition.x(), startPosition.y());
-    trianglePolygon << QPoint(startPosition.x() + m_triangleWidth / 2, startPosition.y() - m_triangleHeight);
+#ifdef old
+    //    trianglePolygon << QPoint(startPosition.x(), startPosition.y());
+    //    trianglePolygon << QPoint(startPosition.x() + m_triangleWidth / 2, startPosition.y() - m_triangleHeight);
 
-    drawPath.addRoundedRect(QRect(startPosition.x() - m_rectangleWidth/2,  startPosition.y() - m_rectangleHeight- m_triangleHeight,m_rectangleWidth,m_rectangleHeight),
-                            BORDER_RADIUS, BORDER_RADIUS);
+    //    drawPath.addRoundedRect(QRect(startPosition.x() - m_rectangleWidth/2,  startPosition.y() - m_rectangleHeight- m_triangleHeight,m_rectangleWidth,m_rectangleHeight),
+    //                            BORDER_RADIUS, BORDER_RADIUS);
 
-    trianglePolygon << QPoint(startPosition.x() - m_triangleWidth /2, startPosition.y() - m_triangleHeight);
+    //    trianglePolygon << QPoint(startPosition.x() - m_triangleWidth /2, startPosition.y() - m_triangleHeight);
+#endif
+    trianglePolygon << QPoint(m_rectangleWidth/2, (m_triangleHeight + m_rectangleHeight));
+    trianglePolygon << QPoint(m_triangleWidth/2 + m_rectangleWidth/2,  m_rectangleHeight);
+
+    drawPath.addRoundedRect(QRect(0,  0,m_rectangleWidth,m_rectangleHeight), BORDER_RADIUS, BORDER_RADIUS);
+
+    trianglePolygon << QPoint(m_rectangleWidth/2 - m_triangleWidth /2,  m_rectangleHeight);
+    qDebug()<<"position "<<trianglePolygon;
     drawPath.addPolygon(trianglePolygon);
     painter.drawPath(drawPath);
+    QLabel::paintEvent(event);
 }
 
 void TsToolTip::setContent(const QString& content)
 {
     m_content = content;
-    m_pLabelContent->setText(content);
+    this->setText(content);
+    //    m_pLabelContent->setText(content);
 }
 
 void TsToolTip::setTriangleInfo(int width, int height)
 {
     m_triangleWidth = width;
     m_triangleHeight = height;
+    this->resize(m_rectangleWidth,m_rectangleHeight + m_triangleHeight);
+    this->update();
 }
 
 void TsToolTip::setRectangle(int width, int height)
 {
     m_rectangleWidth = width;
     m_rectangleHeight = height;
+    this->resize(m_rectangleWidth,m_rectangleHeight + m_triangleHeight);
+    this->update();
 }
 
 void TsToolTip::SetStartPosition(QPoint point)
 {
     startPosition = point;
+}
+
+//对内调用接口
+void TsToolTip::placeTip(QPoint pos)
+{
+    QPoint movePoint = QPoint(pos.x()-m_rectangleWidth/2,pos.y()-m_rectangleHeight-m_triangleHeight);
+    this->move(movePoint);
+    this->show();
 }

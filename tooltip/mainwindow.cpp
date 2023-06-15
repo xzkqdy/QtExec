@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     //    m_pTooltip->setContent("测试内容信息测试内容信息测试内容信息测试内容信息测试内容信息测试内容信息测fqrfeqrf试内容信息rafkrnigrleigutgowalunrovniltgouv");
     m_pTooltip->setContent("像素蛋糕文件名像素蛋糕文件名像素蛋糕文件名文件名文件名IMG_5610PixCake-IMG_5610PixCake-IMG_5610.JPG");
 
-    m_pTooltip->resize(300,300);
+    //m_pTooltip->resize(300,300);
 }
 
 MainWindow::~MainWindow()
@@ -34,9 +34,9 @@ void MainWindow::on_pushButton_clicked(bool checked)
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
     qDebug()<<"zhy mouse move event "<<event<<event->pos();
-    m_pTooltip->SetStartPosition(mapToParent(event->pos()));
-    m_pTooltip->setTriangleInfo(10, 6);
-    m_pTooltip->update();
-    m_pTooltip->show();
+
+//    m_pTooltip->setTriangleInfo(10, 6);
+   m_pTooltip->placeTip(mapToGlobal(event->pos()));
+    //m_pTooltip->move(mapToGlobal(event->pos()));
 
 }
