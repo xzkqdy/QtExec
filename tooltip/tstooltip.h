@@ -23,13 +23,14 @@ public:
     void SetStartPosition(QPoint position);
     void setRectangle(int width, int height);
 
+    //内部调用
+    void updateSize(const QPoint &pos);
     void placeTip(QPoint pos);
 protected:
     void paintEvent(QPaintEvent *event) override;
 private:
     QString m_content;
     QGraphicsDropShadowEffect *m_pShadowEffect;
-//    QLabel *m_pLabelContent;
 
     int m_startX;
     int m_triangleWidth;

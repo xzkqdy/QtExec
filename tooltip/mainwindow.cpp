@@ -22,21 +22,18 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
-void MainWindow::on_pushButton_clicked(bool checked)
-{
-    //    TsToolTip *tooltip = new TsToolTip(this);
-    //    tooltip->setContent("测试tooltip内容超长。。。");
-    //    tooltip->show();
-
-}
-
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
-    qDebug()<<"zhy mouse move event "<<event<<event->pos();
+   // qDebug()<<"zhy mouse move event "<<event<<event->pos();
 
 //    m_pTooltip->setTriangleInfo(10, 6);
    m_pTooltip->placeTip(mapToGlobal(event->pos()));
     //m_pTooltip->move(mapToGlobal(event->pos()));
 
 }
+
+void MainWindow::on_textEdit_textChanged()
+{
+    m_pTooltip->setContent(ui->textEdit->toPlainText());
+}
+

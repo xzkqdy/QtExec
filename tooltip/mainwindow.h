@@ -17,9 +17,8 @@ public:
     ~MainWindow();
 protected:
     void mousePressEvent(QMouseEvent *event) override;
-
 private slots:
-    void on_pushButton_clicked(bool checked);
+    void on_textEdit_textChanged();
 
 private:
     Ui::MainWindow *ui;
