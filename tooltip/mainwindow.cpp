@@ -10,8 +10,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    m_pTooltip = new TsToolTip();
-    m_pTooltip->setContent("像素蛋糕文件名像素蛋糕文件名像素蛋糕文件名文件名文件名IMG_5610PixCake-IMG_5610PixCake-IMG_5610.JPG");
+   // m_pTooltip = new TsToolTip();
+   // m_pTooltip->setContent("像素文件名IMG_5610PixCake-IMG_5610PixCake-IMG_5610.JPG");
 
 }
 
@@ -20,13 +20,14 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::mousePressEvent(QMouseEvent *event)
-{
-   m_pTooltip->placeTip(mapToGlobal(event->pos()));
+void MainWindow::mousePressEvent(QMouseEvent *event) {
+    TsToolTip::showText(mapToGlobal(event->pos()), "test .....像素文件像素文件像素文件像素文件像素文件像素文件像素文件..jpg", NULL, QRect(), 1500);
+//    TsToolTip::showText(mapToGlobal(event->pos()),"");
+    //  m_pTooltip->placeTip(mapToGlobal(event->pos()));
 }
 
 void MainWindow::on_textEdit_textChanged()
 {
-    m_pTooltip->setContent(ui->textEdit->toPlainText());
+  //  m_pTooltip->setContent(ui->textEdit->toPlainText());
 }
 
