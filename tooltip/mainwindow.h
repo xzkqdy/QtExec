@@ -7,7 +7,7 @@
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
-
+class TipLabel;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -23,6 +23,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     TsToolTip *m_pTooltip;
+    TipLabel *tlabel;
 
 };
 #endif // MAINWINDOW_H

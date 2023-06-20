@@ -306,24 +306,36 @@ QT_WARNING_POP
     }
 }
 
-bool TsToolTip::isVisible()
-{
-    return true;
+bool TsToolTip::isVisible() {
+    return (TsTipLabel::instance != nullptr && TsTipLabel::instance->isVisible());
 }
 
 QString TsToolTip::text()
 {
-    return "";
+    if(TsTipLabel::instance){
+        return TsTipLabel::instance->text();
+    }
+    return QString("");
 }
+
+Q_GLOBAL_STATIC(QPalette, tooltip_palette)
 
 QPalette TsToolTip::palette()
 {
-    return QPalette();
+    return *tooltip_palette();
 }
 
-void TsToolTip::setPalette(const QPalette &)
-{
 
+void TsToolTip::setPalette(const QPalette &palette)
+{
+    *tooltip_palette() = palette;
+    if (TsTipLabel::instance)
+        TsTipLabel::instance->setPalette(palette);
+}
+
+void TsToolTip::setFont(const QFont &font)
+{
+    QApplication::setFont(font,"TsTipLabel");
 }
 
 QFont TsToolTip::font()

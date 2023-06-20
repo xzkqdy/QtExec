@@ -27,6 +27,7 @@ public:
 
     static void setPalette(const QPalette &);
 
+    static void setFont(const QFont &font);
     static QFont font();
 };
 
