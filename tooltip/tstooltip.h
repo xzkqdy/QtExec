@@ -6,16 +6,18 @@
 
 QT_BEGIN_NAMESPACE
 
-class TsToolTip
-{
+class TsToolTip {
     TsToolTip() = delete;
+
 public:
-    // ### Qt 6 - merge the three showText functions below
-    static void showText(const QPoint &pos, const QString &text, QWidget *w = nullptr);
+    // ### Qt 6  merge the three showText functions below
+    static void showText(const QPoint &position, const QString &text, QWidget *parent = nullptr);
 
-    static void showText(const QPoint &pos, const QString &text, QWidget *w, const QRect &rect);
+    static void showText(const QPoint &position, const QString &text, QWidget *parent, const QRect &rect);
 
-    static void showText(const QPoint &pos, const QString &text, QWidget *w, const QRect &rect, int msecShowTime);
+    static void
+    showText(const QPoint &position, const QString &text, QWidget *parent, const QRect &rect, int msecShowTime,
+             int offsetx = 0);
 
     static inline void hideText() { showText(QPoint(), QString()); }
 
@@ -28,6 +30,7 @@ public:
     static void setPalette(const QPalette &);
 
     static void setFont(const QFont &font);
+
     static QFont font();
 };
 
